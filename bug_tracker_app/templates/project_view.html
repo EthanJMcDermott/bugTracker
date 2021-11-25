@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
+    </style>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="cover"></div>
+        <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+        </div>
+        <div class="sub-header">
+            <h2>{{ project.title }}</h2>
+            <a href="/projects">Back to Projects</a>
+        </div>
+        <div class="project-view">
+            <div class="project-users box-shadow">
+                <h2>Users</h2>
+                <ul>
+                    {% for user in users %}
+                    <li>{{ user.first_name }} {{ user.last_name }}
+                        {% if request.session.role in admin %}
+                        <a href=""><i class="fas fa-times"></i></a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% if request.session.role == 2 or request.session.role == 3%}
+                <form action="/projects/{{ project.id }}/add_user" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="project" value="{{ project.id }}">
+                    <label for="add-project-user">Add a User to {{ project.title }}</label>
+                    <select name="add-project-user" id="add-project-user">
+                        <option value=""></option>
+                        {% for user in all_users %}
+                        {% if user not in users %}
+                        <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Add User</button>
+                </form>
+                {% endif %}                    
+            </div>
+            <div class="project-tickets">
+                <h2>Active Tickets</h2>
+                <button id="view-resolved-btn" onClick="viewResolved()">View Resolved Tickets</button>
+                <button id="view-active-btn" onClick="viewActive()">View Active Tickets</button>
+                <div class="table-scroll">
+                    <table class="project-tickets-table" id="project-active-tickets">
+                        <tr>
+                            <th>Title</th>
+                            <th>Ticket ID</th>
+                            <th>Priority</th>
+                            <th>Project</th>
+                            <th>Assigned To</th>
+                            <th>Created On</th>
+                            <th>Updated On</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for ticket in tickets %}
+                        {% if ticket.status != 4 %}
+                        <tr id="ticketID{{ ticket.id }}">
+                            <td>{{ ticket.title }}</td>
+                            <td>{{ ticket.id }}</td>
+                            <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                            <td>{{ ticket.project.title }}</td>
+                            {% if ticket.status == 1 %}
+                            <td>Unassigned</td>
+                            {% else %}
+                            <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
+                            {% endif %}
+                            <td>{{ ticket.created_at }}</td>
+                            <td>{{ ticket.updated_at }}</td>
+                            <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+                <div id="resolved-table" class="table-scroll">
+                    <table class="project-tickets-table" id="project-active-tickets">
+                        <tr>
+                            <th>Title</th>
+                            <th>Ticket ID</th>
+                            <th>Priority</th>
+                            <th>Project</th>
+                            <th>Assigned To</th>
+                            <th>Created On</th>
+                            <th>Updated On</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for ticket in tickets %}
+                        {% if ticket.status == 4 %}
+                        <tr id="ticketID{{ ticket.id }}">
+                            <td>{{ ticket.title }}</td>
+                            <td>{{ ticket.id }}</td>
+                            <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                            <td>{{ ticket.project.title }}</td>
+                            {% if ticket.status == 1 %}
+                            <td>Unassigned</td>
+                            {% else %}
+                            <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
+                            {% endif %}
+                            <td>{{ ticket.created_at }}</td>
+                            <td>{{ ticket.updated_at }}</td>
+                            <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </table>
+                </div>
+                <button class="open-form" id="openTicket" onclick="openForm()">Create Ticket</button>
+               
+               <h2>{{ project.title }} Message Board</h2>
+               <div class="comments">
+                    <form action="/comments/add" method="post">
+                        {% csrf_token %}
+                        <textarea class="box-shadow" name="comment" cols="30" rows="10" placeholder="Type a message..."></textarea>
+                        <input type="hidden" name="project" value="{{ project.id }}">
+                        <button class="open-form" type="submit">Comment</button>
+                    </form>
+                    <div class="project-comments box-shadow">
+                        <ul>
+                            {% for comment in comments %}
+                            <li>
+                                <span class="comment-user">{{ comment.user.first_name }} {{ comment.user.last_name }}</span>
+                                <span class="comment-time">{{ comment.created_at }}</span> 
+                                {% if comment.user.id == request.session.user_id or request.session.role in admin%}
+                                    <form action="/comments/{{ comment.id }}/delete" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-comment">Delete</button>
+                                    </form>
+                                {% endif %}
+                                <span class="comment-text">{{ comment.comment }} </span>
+                            {% endfor %}
+                        </ul>
+                    </div>
+               </div>
+            </div>
+        </div>
+        <div class="add-project" id="addTicket">
+            <form action="/tickets/add" method="post">
+                {% csrf_token %}
+                <label for="title">Title</label>
+                <input type="text" name="title">
+                <label for="description">Description</label>
+                <input type="text" name="description">
+                <label for="priority">Priority</label>
+                <select name="priority">
+                    <option value=""></option>
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                </select>
+                <label for="user">Assign To:</label>
+                <select name="user">
+                    <option value=""></option>
+                    {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="project" value="{{ project.id }}">
+                <button type="submit" class="submit">Create Ticket</button>
+            </form>
+            <button class="close-form" onclick="closeForm()">Close</button>
+        </div>
+        </div>
+    </div>
+    <script>
+        function openForm() {
+          document.getElementById("addTicket").style.display = "block";
+          document.getElementById("cover").style.display="block";
+        //   document.getElementById("openTicket").style.display = "none"
+        }
+        
+        function closeForm() {
+          document.getElementById("addTicket").style.display = "none";
+          document.getElementById("cover").style.display="none"
+        //   document.getElementById("openTicket").style.display = "block"
+        }
+
+        function viewResolved() {
+            document.getElementById("resolved-table").style.display = "block";
+            document.getElementById("project-tickets").style.display = "None";
+            document.getElementById("view-active-btn").style.display = "block";
+            document.getElementById("view-resolved-btn").style.display = "block";
+        }
+
+        function viewActive() {
+            document.getElementById("view-active-btn").style.display=""
+        }
+
+    </script>
+</body>
+</html>

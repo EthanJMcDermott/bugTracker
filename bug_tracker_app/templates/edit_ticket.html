@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+        </div>
+        <div class="sub-header">
+            <h2>{{ ticket.title }} (edit view)</h2>
+        </div>
+        <div class="edit-ticket">
+            <form action="/tickets/{{ ticket.id }}/edit/success" method="post">
+                {% csrf_token %}
+                <input type="text" name="title" value="{{ ticket.title }}">
+                <select name="priority">
+                    <option value="{{ ticket.priority }}">{{ ticket.get_priority_display }}</option>
+                    <option value="1">Low</option>
+                    <option value="2">Medium</option>
+                    <option value="3">High</option>
+                </select>
+                <textarea name="description" cols="30" rows="10">{{ ticket.description }}</textarea>
+                <select name="user">
+                    <option value="{{ ticket.user.id }}">{{ ticket.user.first_name }} {{ ticket.user.last_name }}</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+            <!-- <h2>{{ ticket.title }}</h2>
+            <p>ID {{ ticket.id }}</p>
+            <p>Priority: {{ ticket.get_priority_display }}</p>
+            <p>{{ ticket.description }}</p>
+            <p>Assigned To: 
+                {% if ticket.user == None %}
+                    Unassigned
+                {% else %}
+                    {{ ticket.user.first_name }} {{ ticket.user.last_name }}
+                {% endif %}
+            </p> -->
+            <p>Created at: {{ ticket.created_at }}</p>
+            <p>Updated at: {{ ticket.updated_at }}</p>
+
+        </div>
+        <form action="/projects/{{ ticket.project.id }}">
+            <button type="submit" class="ticket-button">Back to Project: {{ ticket.project.title }}</button>
+        </form>
+    </div>    
+</body>
+</html>

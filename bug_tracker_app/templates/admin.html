@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
+    </style>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="cover"></div>
+    <div class="container">
+        <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+        </div>
+        <div>
+            <div class="project-users box-shadow">
+                <h2>Users</h2>
+                <ul>
+                    {% for user in users %}
+                    <li>{{ user.first_name }} {{ user.last_name }}
+                        <button onClick="openForm()" class="edit-user"><i class="far fa-edit"></i></button>
+                        <button class="delete-user"><i class="fas fa-times"></i></button>
+                        <div id="user{{ user.id }}">
+                            <form action="/user/{{ user.id }}/edit" method="post">
+                                {% csrf_token %}
+           
+                                <label for="first_name">First Name</label>
+                                <input type="text" name="first_name" value="{{ request.session.user_first_name }}">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" value="{{ request.session.user_last_name }}">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" value="{{ request.session.user_email }}">
+                                <label for="role">User Role</label>
+                                <select name="role" id="">
+                                    <option value="{{ user.role }}">{{ user.get_role_display }}</option>
+                                    <option value="1">Developer</option>
+                                    <option value="2">Project Manager</option>
+                                    <option value="3">Admin</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>                  
+            </div>
+            <div class="table-scroll">
+                <h2 id="admin-tickets">Tickets Pending Review</h2>
+                <table class="project-tickets-table" id="project-active-tickets">
+                    <tr>
+                        <th>Title</th>
+                        <th>Ticket ID</th>
+                        <th>Priority</th>+
+                        <th>Project</th>
+                        <th>Assigned To</th>
+                        <th>Created On</th>
+                        <th>Updated On</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for ticket in tickets %}
+                    {% if ticket.project.project_manager.id == request.session.user_id and ticket.status == 3 %}
+                    <tr id="ticketID{{ ticket.id }}">
+                        <td>{{ ticket.title }}</td>
+                        <td>{{ ticket.id }}</td>
+                        <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                        <td>{{ ticket.project.title }}</td>
+                        {% if ticket.status == 1 %}
+                        <td>Unassigned</td>
+                        {% else %}
+                        <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
+                        {% endif %}
+                        <td>{{ ticket.created_at }}</td>
+                        <td>{{ ticket.updated_at }}</td>
+                        <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openForm(formid) {
+          document.getElementById().style.display = "block";
+          document.getElementById("cover").style.display="block";
+        }
+    </script>
+</body>
+</html>

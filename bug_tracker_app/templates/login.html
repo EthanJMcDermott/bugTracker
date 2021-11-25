@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Bug Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
+    </style>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container-login">
+        <div class="custom-shape-divider-bottom-1637208676">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+        <div class="header">
+            <h2>Welcome To Bug Tracker</h2>
+        </div>
+
+        <div class="main login-reg">
+            <div class="logo-title">
+                <h1> &lt Bug Tracker &gt</h1>
+                <h3>Software Development <br> Simplified</h3>
+            </div>
+            <div class="login">
+                <div class="login-header">
+                    <h1>Login</h1>
+                    <p>Not a user? <a href="/register">Register!</a></p>
+                </div>
+                <form action="/login/success" method="post">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="user@email.com">
+                    <input type="password" name="password" placeholder="password">
+                    <button type="submit">Log In</button>
+                </form>
+            </div>
+        </div>
+        {% if messages %}
+        <div class="errors">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="footer">
+            <i class="fab fa-linkedin fa-2x"></i>
+            <i class="fab fa-github-square fa-2x"></i>
+            <i class="fas fa-laptop-code fa-2x"></i>
+        </div>
+    </div>
+    
+</body>
+</html>

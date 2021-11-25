@@ -1,0 +1,684 @@
+/* GENERAL STYLES */
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+.custom-shape-divider-bottom-1637208676 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1637208676 svg {
+    position: relative;
+    display: block;
+    width: calc(300% + 1.3px);
+    height: 252px;
+}
+
+.custom-shape-divider-bottom-1637208676 .shape-fill {
+    fill: #633af8;
+}
+
+/** For mobile devices **/
+@media (max-width: 767px) {
+    .custom-shape-divider-bottom-1637208676 svg {
+        width: calc(135% + 1.3px);
+        height: 137px;
+    }
+}
+
+html,body { height:100%; }
+
+textarea {
+    resize: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+/* TABLE STYLING */
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10px;
+    background-color: white;
+}
+
+td, th {
+/* border: 1px solid #ddd; */
+padding: 8px;
+border: none;
+}
+
+/* tr:nth-child(even){background-color: #e9e9e9;}
+
+tr:nth-child(odd){background-color: white;} */
+
+tr:hover {background-color: rgb(202, 202, 202);}
+
+th {
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: left;
+background-color: #0497aa;
+color: white;
+position: sticky;
+top: -1px;
+}
+
+.container-login {
+    position: relative;
+    height: 100%;
+    /* margin: auto;
+    width: 1500px;
+    background-color: white; */
+    /* padding-bottom: 150px;
+    padding-top: 50px; */
+    /* padding-left: 50px;
+    padding-right: 50px; */
+    background-size: cover;
+    /* background-image: linear-gradient(to bottom right, rgb(0, 68, 255), rgb(105, 227, 243)); */
+}
+
+.container {
+    position: relative;
+    min-height: 100%;
+    /* margin: auto;
+    width: 1500px;
+    background-color: white; */
+    /* padding-bottom: 150px;
+    padding-top: 50px; */
+    /* padding-left: 50px;
+    padding-right: 50px; */
+    background-image: linear-gradient(to bottom right, rgb(235, 235, 235), rgb(208, 236, 255));
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.header {
+    background-image: linear-gradient(to bottom right, #1e8aff, #2cdfff);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    padding: .45rem;
+}
+
+.header a {
+    font-family: 'Quicksand', sans-serif;
+    color: white;
+    letter-spacing: .25rem;
+    padding: 1.5rem;
+}
+
+.header a:hover{ 
+    transition: all .3s ease-in-out;
+    transform: scale(1.2);
+    background-color: white;
+    color: black;
+}
+
+
+.container-login .header {
+    background-color: rgb(238, 243, 255);
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    height: 2.5rem;            /* Footer height */
+}
+
+i {
+    color: white;
+}
+
+.sub-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    color: #0497aa;
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    border-radius: 8px;
+    border:1.5px solid #0497aa;
+}
+.sub-header a {
+    vertical-align: bottom;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    display: block;
+    margin-bottom: 25px;
+}
+
+
+/* ERRORS */
+.errors {
+    color: red;
+    margin-top: 30px;
+    background-color: rgb(255, 200, 200);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+
+/* LOGIN REGISTRATION STYLE */
+.main.login-reg {
+    display: flex;
+    justify-content: center;
+}
+
+.login {
+    min-width: 25rem;
+    display: inline-block;
+    padding: 2.5rem;
+    border:1px solid #0497aa;
+    border-radius: 6px;
+    background-color: rgb(255, 255, 255); 
+}
+
+.login-header {
+    margin-bottom: 3rem;
+}
+
+.login-header p, .login-header h1 {
+    display: inline-block;
+}
+
+.login-header p {
+    margin-left: 10px;
+}
+
+.login-header a {
+    font-weight: bold;
+}
+
+.login input {
+    margin: auto;
+    margin-top: 1.5rem;
+    width: 75%;
+    border: 1px solid rgb(206, 206, 206);
+    border-radius: 20px;
+    padding: 1rem;
+    
+}
+
+.login button {
+    position: relative;
+    left: 25%;
+    margin-top: 2rem;
+    width: 50%;
+    background-color: rgb(41, 98, 255);
+}
+
+/** For mobile devices **/
+@media (max-width: 767px) {
+    .login {
+        min-width: 0;
+        max-height: 22rem;
+        overflow: auto;
+    }
+    .footer {
+        bottom: 0;
+    }
+}
+
+.logo-title {
+    margin-right: 12rem;
+}
+
+.logo-title h1, .logo-title h3 {
+    font-family: 'Quicksand', sans-serif;
+    letter-spacing: .5rem;
+    text-align: center;
+}
+
+
+/* DASHBOARD */
+.dashboard-project {
+    display: block;
+}
+
+.main.dash {
+    display: block;
+}
+
+.dashboard {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.dash-tickets {
+    vertical-align: top;
+}
+
+.main.dash h1 {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+.dash-tickets {
+    width: 20rem;
+    vertical-align: top;
+    background-color: white;
+    margin-top: 1rem;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.dashboard-continued {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 3rem;
+}
+
+
+.deadlines {
+    display: inline-block;
+    width: 30%;
+}
+
+.schedule {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.schedule li {
+    background-color: white;
+    border-radius: 10px;
+    border-bottom:.5px solid rgba(0, 0, 0, 0.2);
+    border-top: .5px solid rgba(0, 0, 0, 0.19);
+    padding: 1rem;
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)     */
+}
+
+
+/* PROJECTS */
+button {
+    color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    border:1px solid rgb(218, 218, 218);
+    cursor: pointer;
+}
+
+.open-form {
+    margin-left: 50px;
+    background-color: #00065e;
+}
+
+.close-form {
+    margin-top: 10px;
+    background-color: rgb(209 63 63);
+    width: 100%;
+}
+
+.submit {
+    background-color: rgb(0 151 0);
+    margin-top: 10px;
+    width: 100%;
+}
+
+.add-project {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    display: none;
+    margin-top: 50px;
+    padding: 2rem;
+    background-color: white;
+    border:1px solid #0497aa;
+    border-radius: 3px;
+}
+
+.add-project input, .add-project textarea, .add-project select {
+    width: 94%;
+    background: #f1f1f1;
+    border-radius: 3px;
+    padding: .5rem;
+}
+
+.add-project select {
+    width: 100%;
+}
+
+.projects {
+    /* display: flex; */
+    margin-top: 50px;   
+    justify-content: space-around;
+    max-height: 72%;
+    overflow-y: auto;
+}
+
+.projects h3 {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: rgb(255, 148, 47);
+}
+
+.projects h4 {
+    margin-bottom: 2rem;
+}
+
+.individual-project {
+    display: inline-block;
+    vertical-align: top;
+    height: 300px;
+    width: 20rem;
+    margin: 3rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 3px;
+}
+
+.project-description {
+    overflow: hidden;
+}
+
+.project-footer {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* PROJECT VIEW */
+
+/* Discussion Board */
+.delete-comment {
+    background-color: rgb(255, 75, 75);
+    padding: .25rem;
+    margin-left: 2rem;
+}
+.comments {
+    width: fit-content;
+    margin: auto;
+}
+.comments form {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#resolved-table {
+    display: none;
+}
+.comments form textarea {
+    height: 28rem;
+    /* border: 2px solid #0497aa; */
+    border-radius: 10px;
+    padding: 1rem;
+}
+.project-comments {
+    display: inline-block;
+    width: 50rem;
+    max-width: 50rem;
+    min-height: 30rem;
+    max-height: 30rem;
+    background-color: white;
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.project-comments ul {
+    padding: 2rem;
+}
+
+.project-comments li {
+    padding: 1rem;
+    border-bottom: .5px solid gray;
+    margin-bottom: 1rem;
+}
+
+.comment-text {
+    display: block;
+    margin-top: .5rem;
+}
+
+.comment-user {
+    font-weight: bold;
+    color: #00065e;
+}
+
+.comment-time {
+    font-style: italic;
+}
+
+li i {
+    color:#00065e;
+    margin-left: 1rem;
+}
+
+
+.project-users {
+    display: inline-block;
+    vertical-align: top;
+    padding: 2rem;
+    border-radius: 5px;
+    background-color: white;
+}
+
+
+.project-users form {
+    margin-top: 1rem;
+}
+
+.project-users select {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: .25rem;
+}
+
+.project-view button {
+    background-color: #00065e;
+}
+
+.project-tickets {
+    display: inline-block;
+    width: 87%;
+    margin: auto;
+}
+
+.project-tickets h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.project-tickets-table {
+    width: 80%;
+    margin: auto;
+    padding: 2rem;
+    /* border:1px solid #0497aa;
+    border-radius: 5px; */
+}
+
+#view-resolved-btn {
+    background-color:#00065e ;
+}
+
+#view-active-btn {
+    display: none;
+}
+
+.project-tickets-table select {
+    margin-top: .5rem;
+    border: 1px solid black;
+}
+
+#openTicket {
+    margin-top: 1em;
+    margin-left: 12em;
+}
+
+.dot {
+    height: .75rem;
+    width: .75rem;
+    margin-right: .5rem;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: green;
+}
+
+#low {
+    background-color: rgb(106, 190, 49);
+}
+
+#medium {
+    background-color: orange;
+}
+
+#high {
+    background-color: rgb(255, 65, 65);
+}
+
+#addTicket {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10%;
+}
+
+#cover {
+    background-color:black;
+    width:100%;
+    height:100%;
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    opacity: .5;
+}
+
+.table-scroll {
+    max-height: 289px;
+    overflow-y: scroll;
+}
+
+.ticket-view {
+    display: inline-block;
+    width: 3rem;
+    height: 1rem;
+    color: black;
+    padding: 0;
+    background-color: lightblue;
+}
+
+#ticket-submit {
+    background-color: orange;
+}
+
+#ticket-delete {
+    background-color: rgb(255, 75, 75);
+}
+
+#ticket-resolve {
+    background-color: rgb(33, 211, 33);
+}
+
+#view-ticket {
+    background-color: #94ddff;
+}
+
+#edit-ticket {
+    background-color: #ffce73;
+}
+
+/* TICKET VIEW */
+
+.view-tickets-table {
+    display: inline-block;
+}
+
+.ticket-button {
+    background-color: #0497aa;
+}
+
+.edit-ticket {
+    width: fit-content;
+    margin-top: 50px;
+    padding: 2rem;
+    background-color: orange;
+    /* border:1px solid #0497aa; */
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+.edit-ticket input, .edit-ticket textarea, .edit-ticket select {
+    width: 94%;
+    background: white;
+    border-radius: 3px;
+    padding: .5rem;
+}
+
+.edit-ticket select {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.edit-ticket button {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #0497aa;
+}
+
+/* admin */
+#admin-tickets {
+    text-align: center;
+}
+
+.fa-edit {
+    color: orange;
+}
+
+.fa-times {
+    color: red;
+}
+
+.edit-user {
+    background-color: white;
+    border: none;
+    padding: .25rem;
+}
+
+.delete-user {
+    background-color: white;
+    border: none;
+    padding: .25rem
+}
+
+li div {
+    display: none;
+}

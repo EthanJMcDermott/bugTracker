@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+        </div>
+        <div class="main dash">
+            <h2>Welcome {{ request.session.user_first_name }}. Today is {{ weekday }} {{ today }}</h2>
+            <h3><a href="/user/{{ request.session.user_id }}">Edit User Profile</a></h3>
+            <div class="dashboard">
+                <div class="dash-tickets box-shadow">
+                    <h2>Open Tickets vs New Tickets</h2>
+                    <canvas id="open-tickets-chart" width="250" height="250" aria-label="Tickets" role="img"></canvas>
+                </div>
+                
+                <div class="dash-tickets box-shadow">
+                    <h2>My Tickets</h2>
+                    <canvas id="ticket-chart"  width="250" height="250" aria-label="Tickets" role="img"></canvas>
+                </div>
+
+                <div class="dash-tickets box-shadow">
+                    <h2>My Tickets by Project</h2>
+                    <canvas id="tickets-by-projects"  width="270" height="270" aria-label="Tickets" role="img"></canvas>
+                </div>
+            </div>
+            <div class="dashboard-continued">
+                <div class="deadlines">
+                    <h1 class="box-shadow">deadlines</h1>
+                    <ul class="schedule box-shadow">
+                        <li>
+                            <h3>Monday</h3>
+                        </li>
+                        <li>
+                            <h3>Tuesday</h3>
+                        </li>
+                        <li>
+                            <h3>Wednesday</h3>
+                        </li>
+                        <li>
+                            <h3>Thursday</h3>
+                        </li>
+                        <li>
+                            <h3>Friday</h3>
+                        </li>
+                        <li>
+                            <h3>Saturday</h3>
+                        </li>
+                        <li>
+                            <h3>Sunday</h3>
+                        </li>   
+                    </ul>
+                </div>
+                <div class="dash-messages">
+                    <h1 class="box-shadow">Recent Messages</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dataPie = {
+            labels: [
+                'High',
+                'Medium',
+                'Low'
+            ],
+            datasets: [{
+                label: 'My Tickets',
+                data: ["{{ high }}", "{{ medium }}", "{{ low }}"],
+                backgroundColor: [
+                'rgb(255, 65, 65)',
+                'orange',
+                'rgb(106, 190, 49)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const config = {
+            type: 'pie',
+            data: dataPie,
+        };
+        const myPieChart = new Chart(
+            document.getElementById('ticket-chart'),
+            config
+        );
+
+        
+        
+        var data_tickets = [{% for project_ticket in project_tickets %} {{ project_ticket.num_tickets }}, {% endfor %}]
+        const labels = [{% for project_ticket in project_tickets %} '{{ project_ticket.project__title }}', {% endfor %}];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: "My Tickets",
+                data: data_tickets,
+                backgroundColor: [
+                    'rgb(255, 65, 65)',
+                    'orange',
+                    'rgb(106, 190, 49)'
+                ],
+            }]
+
+        }
+        
+        const configNew = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        };
+        const myChart = new Chart(
+            document.getElementById('tickets-by-projects'),
+            configNew
+        );
+
+    </script>
+</body>
+</html>
