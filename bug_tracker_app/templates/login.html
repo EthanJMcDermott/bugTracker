@@ -11,8 +11,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
     </style>
     <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
+    <script>
+        $(document).ready(function() {
+            $("#logo-title").fadeIn(1000)
+        })
+    </script>
     <div class="container-login">
         <div class="custom-shape-divider-bottom-1637208676">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -24,9 +30,14 @@
         </div>
 
         <div class="main login-reg">
-            <div class="logo-title">
+            <div id="logo-title">
                 <h1> &lt Bug Tracker &gt</h1>
                 <h3>Software Development <br> Simplified</h3>
+                <div class="login-icons">
+                    <i class="far fa-chart-bar fa-3x"></i>
+                    <i class="fas fa-chart-pie fa-3x"></i>
+                    <i class="fas fa-tasks fa-3x"></i>
+                </div>
             </div>
             <div class="login">
                 <div class="login-header">

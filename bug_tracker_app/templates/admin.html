@@ -12,8 +12,24 @@
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
     </style>
     <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
+    <script>
+        $(document).ready(function(){
+            $("button").click(function() {
+                var userForm = "." + this.id
+                $(userForm).stop().toggle('slow');
+            });
+            $("#mobile-nav-btn").click(function() {
+                $("#mobile-nav").toggle();
+            });
+            $("#show-users").click(function() {
+                $(".project-users").toggle();
+                $("th").toggle()
+            });
+        })
+    </script>
     <div id="cover"></div>
     <div class="container">
         <div class="header">
@@ -24,25 +40,37 @@
             <a href="/admin">Admin</a>
             {% endif %}
             <a href="/logout">Logout</a>
+            <button id="mobile-nav-btn">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+        <div id="mobile-nav">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
         </div>
         <div>
-            <div class="project-users box-shadow">
+            <div class="project-users box-shadow" id="admin-project-users">
                 <h2>Users</h2>
                 <ul>
                     {% for user in users %}
                     <li>{{ user.first_name }} {{ user.last_name }}
-                        <button onClick="openForm()" class="edit-user"><i class="far fa-edit"></i></button>
+                        <button id="editUser{{ user.id }}" class="edit-user"><i class="far fa-edit"></i></button>
                         <button class="delete-user"><i class="fas fa-times"></i></button>
-                        <div id="user{{ user.id }}">
-                            <form action="/user/{{ user.id }}/edit" method="post">
+                        <div id="user{{ user.id }}" class="editUsers editUser{{ user.id }}">
+                            <form action="/admin/{{ user.id }}/edit" method="post">
                                 {% csrf_token %}
            
                                 <label for="first_name">First Name</label>
-                                <input type="text" name="first_name" value="{{ request.session.user_first_name }}">
+                                <input type="text" name="first_name" value="{{ user.first_name }}">
                                 <label for="last_name">Last Name</label>
-                                <input type="text" name="last_name" value="{{ request.session.user_last_name }}">
+                                <input type="text" name="last_name" value="{{ user.last_name }}">
                                 <label for="email">Email</label>
-                                <input type="email" name="email" value="{{ request.session.user_email }}">
+                                <input type="email" name="email" value="{{ user.email }}">
                                 <label for="role">User Role</label>
                                 <select name="role" id="">
                                     <option value="{{ user.role }}">{{ user.get_role_display }}</option>
@@ -55,35 +83,38 @@
                         </div>
                     </li>
                     {% endfor %}
-                </ul>                  
+                </ul>                
             </div>
-            <div class="table-scroll">
+            <button id="show-users">
+                <i class="fas fa-angle-double-down fa-2x"></i>
+            </button>  
+            <div class="table-scroll" id="admin-table">
                 <h2 id="admin-tickets">Tickets Pending Review</h2>
                 <table class="project-tickets-table" id="project-active-tickets">
                     <tr>
                         <th>Title</th>
-                        <th>Ticket ID</th>
-                        <th>Priority</th>+
+                        <th class="desktop-table">Ticket ID</th>
+                        <th class="desktop-table">Priority</th>
                         <th>Project</th>
                         <th>Assigned To</th>
-                        <th>Created On</th>
-                        <th>Updated On</th>
+                        <th class="desktop-table">Created On</th>
+                        <th class="desktop-table">Updated On</th>
                         <th>Action</th>
                     </tr>
                     {% for ticket in tickets %}
                     {% if ticket.project.project_manager.id == request.session.user_id and ticket.status == 3 %}
                     <tr id="ticketID{{ ticket.id }}">
                         <td>{{ ticket.title }}</td>
-                        <td>{{ ticket.id }}</td>
-                        <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                        <td class="desktop-table">{{ ticket.id }}</td>
+                        <td class="desktop-table"><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
                         <td>{{ ticket.project.title }}</td>
                         {% if ticket.status == 1 %}
                         <td>Unassigned</td>
                         {% else %}
                         <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
                         {% endif %}
-                        <td>{{ ticket.created_at }}</td>
-                        <td>{{ ticket.updated_at }}</td>
+                        <td class="desktop-table">{{ ticket.created_at }}</td>
+                        <td class="desktop-table">{{ ticket.updated_at }}</td>
                         <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
                     </tr>
                     {% endif %}
@@ -92,11 +123,5 @@
             </div>
         </div>
     </div>
-    <script>
-        function openForm(formid) {
-          document.getElementById().style.display = "block";
-          document.getElementById("cover").style.display="block";
-        }
-    </script>
 </body>
 </html>

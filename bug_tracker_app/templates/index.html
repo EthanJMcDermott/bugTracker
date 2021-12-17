@@ -11,8 +11,18 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <title>Document</title>
 </head>
 <body>
+    <script>
+        $(document).ready(function(){
+            $("#mobile-nav-btn").click(function() {
+                $("#mobile-nav").toggle();
+            })
+        })
+    </script>
     <div class="container">
         <div class="header">
             <a href="/">Home</a>
@@ -22,14 +32,36 @@
             <a href="/admin">Admin</a>
             {% endif %}
             <a href="/logout">Logout</a>
+            <button id="mobile-nav-btn">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+        <div id="mobile-nav">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
         </div>
         <div class="main dash">
-            <h2>Welcome {{ request.session.user_first_name }}. Today is {{ weekday }} {{ today }}</h2>
-            <h3><a href="/user/{{ request.session.user_id }}">Edit User Profile</a></h3>
+            <div id="dash-header">
+                <h2>Welcome {{ request.session.user_first_name }}. Today is {{ weekday }} {{ today }}</h2>
+                <h3><a href="/user/{{ request.session.user_id }}">Edit User Profile</a></h3>
+            </div>
             <div class="dashboard">
                 <div class="dash-tickets box-shadow">
-                    <h2>Open Tickets vs New Tickets</h2>
-                    <canvas id="open-tickets-chart" width="250" height="250" aria-label="Tickets" role="img"></canvas>
+                    <div id="tickets-totals">
+                        <h2>Total Tickets</h2>
+                        Open Tickets: {{ total_tickets_open }} <br>
+                        Closed Tickets: {{ total_tickets_closed }}
+                    </div>
+                    <div id="tickets-user">
+                        <h2>My Tickets</h2>
+                        My Open Tickets: {{ user_tickets_total }} <br>
+                        My Closed Tickets: {{ user_tickets_closed }}
+                    </div>
                 </div>
                 
                 <div class="dash-tickets box-shadow">
@@ -40,37 +72,6 @@
                 <div class="dash-tickets box-shadow">
                     <h2>My Tickets by Project</h2>
                     <canvas id="tickets-by-projects"  width="270" height="270" aria-label="Tickets" role="img"></canvas>
-                </div>
-            </div>
-            <div class="dashboard-continued">
-                <div class="deadlines">
-                    <h1 class="box-shadow">deadlines</h1>
-                    <ul class="schedule box-shadow">
-                        <li>
-                            <h3>Monday</h3>
-                        </li>
-                        <li>
-                            <h3>Tuesday</h3>
-                        </li>
-                        <li>
-                            <h3>Wednesday</h3>
-                        </li>
-                        <li>
-                            <h3>Thursday</h3>
-                        </li>
-                        <li>
-                            <h3>Friday</h3>
-                        </li>
-                        <li>
-                            <h3>Saturday</h3>
-                        </li>
-                        <li>
-                            <h3>Sunday</h3>
-                        </li>   
-                    </ul>
-                </div>
-                <div class="dash-messages">
-                    <h1 class="box-shadow">Recent Messages</h1>
                 </div>
             </div>
         </div>

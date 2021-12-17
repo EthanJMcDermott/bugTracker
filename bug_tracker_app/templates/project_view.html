@@ -14,9 +14,56 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
+    <script>
+        $(document).ready(function(){
+            $("#openTicket").stop().click(function(){
+                $("#addTicket").fadeIn("slow");
+                $("#cover").fadeIn("fast");
+            });
+            
+            $("#closeTicket").click(function() {
+                $("#addTicket").hide();
+                $("#cover").hide();
+            })
+
+            $("#view-resolved-btn").stop().click(function() {
+                $("#active-table").stop().hide();
+                $("#resolved-table").stop().fadeIn("slow").delay(1000);
+                $("#view-resolved-btn").stop().hide();
+                $("#view-active-btn").stop().show();
+            })
+
+            $("#view-active-btn").stop().click(function() {
+                $("#active-table").stop().fadeIn("slow").delay(1000);
+                $("#resolved-table").stop().hide();
+                $("#view-resolved-btn").stop().show();
+                $("#view-active-btn").stop().hide();
+            })
+
+            $("#mobile-nav-btn").click(function() {
+                $("#mobile-nav").toggle();
+            })
+
+            $("#show-users").click(function() {
+                $(".project-users").toggle();
+            })
+        })
+    </script>
     <div class="container">
         <div id="cover"></div>
         <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+            <button id="mobile-nav-btn">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+        <div id="mobile-nav">
             <a href="/">Home</a>
             <a href="/projects">Projects</a>
             <a href="/tickets">Tickets</a>
@@ -30,6 +77,9 @@
             <a href="/projects">Back to Projects</a>
         </div>
         <div class="project-view">
+            <button id="show-users">
+                <i class="fas fa-angle-double-down fa-2x"></i>
+            </button>
             <div class="project-users box-shadow">
                 <h2>Users</h2>
                 <ul>
@@ -46,7 +96,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="project" value="{{ project.id }}">
                     <label for="add-project-user">Add a User to {{ project.title }}</label>
-                    <select name="add-project-user" id="add-project-user">
+                    <select name="add-project-user" id="add-project-user" required>
                         <option value=""></option>
                         {% for user in all_users %}
                         {% if user not in users %}
@@ -54,40 +104,41 @@
                         {% endif %}
                         {% endfor %}
                     </select>
-                    <button type="submit">Add User</button>
+                    <button id="add-user" type="submit">Add User</button>
                 </form>
                 {% endif %}                    
             </div>
             <div class="project-tickets">
-                <h2>Active Tickets</h2>
-                <button id="view-resolved-btn" onClick="viewResolved()">View Resolved Tickets</button>
-                <button id="view-active-btn" onClick="viewActive()">View Active Tickets</button>
-                <div class="table-scroll">
-                    <table class="project-tickets-table" id="project-active-tickets">
+                
+                <button id="view-resolved-btn">View Resolved Tickets</button>
+                <button id="view-active-btn">View Active Tickets</button>
+                <div id="active-table" class="table-scroll">
+                    <h2>Active Tickets</h2>
+                    <table class="project-tickets-table">
                         <tr>
                             <th>Title</th>
-                            <th>Ticket ID</th>
-                            <th>Priority</th>
+                            <th class="desktop-table">Ticket ID</th>
+                            <th class="desktop-table">Priority</th>
                             <th>Project</th>
                             <th>Assigned To</th>
-                            <th>Created On</th>
-                            <th>Updated On</th>
+                            <th class="desktop-table">Created On</th>
+                            <th class="desktop-table">Updated On</th>
                             <th>Action</th>
                         </tr>
                         {% for ticket in tickets %}
                         {% if ticket.status != 4 %}
                         <tr id="ticketID{{ ticket.id }}">
                             <td>{{ ticket.title }}</td>
-                            <td>{{ ticket.id }}</td>
-                            <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                            <td class="desktop-table">{{ ticket.id }}</td>
+                            <td class="desktop-table"><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
                             <td>{{ ticket.project.title }}</td>
                             {% if ticket.status == 1 %}
                             <td>Unassigned</td>
                             {% else %}
                             <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
                             {% endif %}
-                            <td>{{ ticket.created_at }}</td>
-                            <td>{{ ticket.updated_at }}</td>
+                            <td class="desktop-table">{{ ticket.created_at }}</td>
+                            <td class="desktop-table">{{ ticket.updated_at }}</td>
                             <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
                         </tr>
                         {% endif %}
@@ -95,52 +146,47 @@
                     </table>
                 </div>
                 <div id="resolved-table" class="table-scroll">
-                    <table class="project-tickets-table" id="project-active-tickets">
+                    <h2>Resolved Tickets</h2>
+                    <table class="project-tickets-table">
                         <tr>
                             <th>Title</th>
-                            <th>Ticket ID</th>
-                            <th>Priority</th>
+                            <th class="desktop-table">Ticket ID</th>
+                            <th class="desktop-table">Priority</th>
                             <th>Project</th>
                             <th>Assigned To</th>
-                            <th>Created On</th>
-                            <th>Updated On</th>
+                            <th class="desktop-table">Created On</th>
+                            <th class="desktop-table">Updated On</th>
                             <th>Action</th>
                         </tr>
                         {% for ticket in tickets %}
                         {% if ticket.status == 4 %}
                         <tr id="ticketID{{ ticket.id }}">
                             <td>{{ ticket.title }}</td>
-                            <td>{{ ticket.id }}</td>
-                            <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                            <td class="desktop-table">{{ ticket.id }}</td>
+                            <td class="desktop-table"><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
                             <td>{{ ticket.project.title }}</td>
                             {% if ticket.status == 1 %}
                             <td>Unassigned</td>
                             {% else %}
                             <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
                             {% endif %}
-                            <td>{{ ticket.created_at }}</td>
-                            <td>{{ ticket.updated_at }}</td>
+                            <td class="desktop-table">{{ ticket.created_at }}</td>
+                            <td class="desktop-table">{{ ticket.updated_at }}</td>
                             <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
                         </tr>
                         {% endif %}
                         {% endfor %}
                     </table>
                 </div>
-                <button class="open-form" id="openTicket" onclick="openForm()">Create Ticket</button>
+                <button class="open-form" id="openTicket">Create Ticket</button>
                
                <h2>{{ project.title }} Message Board</h2>
                <div class="comments">
-                    <form action="/comments/add" method="post">
-                        {% csrf_token %}
-                        <textarea class="box-shadow" name="comment" cols="30" rows="10" placeholder="Type a message..."></textarea>
-                        <input type="hidden" name="project" value="{{ project.id }}">
-                        <button class="open-form" type="submit">Comment</button>
-                    </form>
                     <div class="project-comments box-shadow">
                         <ul>
                             {% for comment in comments %}
                             <li>
-                                <span class="comment-user">{{ comment.user.first_name }} {{ comment.user.last_name }}</span>
+                                <span class="comment-user">{{ comment.user.first_name }} {{ comment.user.last_name }}</span> <span class="comment-{{ comment.user.get_user_role_display }}">({{ comment.user.get_user_role_display }})</span>
                                 <span class="comment-time">{{ comment.created_at }}</span> 
                                 {% if comment.user.id == request.session.user_id or request.session.role in admin%}
                                     <form action="/comments/{{ comment.id }}/delete" method="post">
@@ -152,6 +198,12 @@
                             {% endfor %}
                         </ul>
                     </div>
+                    <form action="/comments/add" method="post">
+                        {% csrf_token %}
+                        <textarea class="box-shadow" name="comment" cols="30" rows="10" placeholder="Type a message..."></textarea>
+                        <input type="hidden" name="project" value="{{ project.id }}">
+                        <button class="open-form" type="submit">Comment</button>
+                    </form>
                </div>
             </div>
         </div>
@@ -159,11 +211,11 @@
             <form action="/tickets/add" method="post">
                 {% csrf_token %}
                 <label for="title">Title</label>
-                <input type="text" name="title">
+                <input type="text" name="title" required>
                 <label for="description">Description</label>
-                <input type="text" name="description">
+                <input type="text" name="description" required>
                 <label for="priority">Priority</label>
-                <select name="priority">
+                <select name="priority" required>
                     <option value=""></option>
                     <option value="1">Low</option>
                     <option value="2">Medium</option>
@@ -179,34 +231,9 @@
                 <input type="hidden" name="project" value="{{ project.id }}">
                 <button type="submit" class="submit">Create Ticket</button>
             </form>
-            <button class="close-form" onclick="closeForm()">Close</button>
+            <button class="close-form" id="closeTicket">Close</button>
         </div>
         </div>
     </div>
-    <script>
-        function openForm() {
-          document.getElementById("addTicket").style.display = "block";
-          document.getElementById("cover").style.display="block";
-        //   document.getElementById("openTicket").style.display = "none"
-        }
-        
-        function closeForm() {
-          document.getElementById("addTicket").style.display = "none";
-          document.getElementById("cover").style.display="none"
-        //   document.getElementById("openTicket").style.display = "block"
-        }
-
-        function viewResolved() {
-            document.getElementById("resolved-table").style.display = "block";
-            document.getElementById("project-tickets").style.display = "None";
-            document.getElementById("view-active-btn").style.display = "block";
-            document.getElementById("view-resolved-btn").style.display = "block";
-        }
-
-        function viewActive() {
-            document.getElementById("view-active-btn").style.display=""
-        }
-
-    </script>
 </body>
 </html>

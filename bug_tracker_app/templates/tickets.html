@@ -10,10 +10,32 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <title>Document</title>
 </head>
 <body>
+    <script>
+        $(document).ready(function(){
+            $("#mobile-nav-btn").click(function() {
+                $("#mobile-nav").toggle();
+            })
+        })
+    </script>
     <div class="container">
         <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+            <button id="mobile-nav-btn">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+        <div id="mobile-nav">
             <a href="/">Home</a>
             <a href="/projects">Projects</a>
             <a href="/tickets">Tickets</a>
@@ -25,42 +47,71 @@
         <div class="sub-header">
             <h2>My Tickets</h2>
         </div>
-        <div class="dashboard">
-            <div class="projects">
-                <h2>Active Tickets</h2>
-                <div class="table-scroll">
-                    <table class="project-tickets-table" id="project-active-tickets">
-                        <tr>
-                            <th>Title</th>
-                            <th>Ticket ID</th>
-                            <th>Priority</th>+
-                            <th>Project</th>
-                            <th>Assigned To</th>
-                            <th>Created On</th>
-                            <th>Updated On</th>
-                            <th>Action</th>
-                        </tr>
-                        {% for ticket in tickets %}
-                        {% if ticket.user.id == request.session.user_id %}
-                        <tr id="ticketID{{ ticket.id }}">
-                            <td>{{ ticket.title }}</td>
-                            <td>{{ ticket.id }}</td>
-                            <td><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
-                            <td>{{ ticket.project.title }}</td>
-                            {% if ticket.status == 1 %}
-                            <td>Unassigned</td>
-                            {% else %}
-                            <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
-                            {% endif %}
-                            <td>{{ ticket.created_at }}</td>
-                            <td>{{ ticket.updated_at }}</td>
-                            <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
+        <div class="table-scroll">
+            <h2>Active Tickets</h2>
+            <table class="project-tickets-table" id="project-active-tickets">
+                <tr>
+                    <th>Title</th>
+                    <th class="desktop-table">Ticket ID</th>
+                    <th class="desktop-table">Priority</th>
+                    <th>Project</th>
+                    <th>Assigned To</th>
+                    <th class="desktop-table">Created On</th>
+                    <th class="desktop-table">Updated On</th>
+                    <th>Action</th>
+                </tr>
+                {% for ticket in tickets %}
+                {% if ticket.user.id == request.session.user_id %}
+                <tr id="ticketID{{ ticket.id }}">
+                    <td>{{ ticket.title }}</td>
+                    <td class="desktop-table">{{ ticket.id }}</td>
+                    <td class="desktop-table"><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                    <td>{{ ticket.project.title }}</td>
+                    {% if ticket.status == 1 %}
+                    <td>Unassigned</td>
+                    {% else %}
+                    <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
+                    {% endif %}
+                    <td class="desktop-table">{{ ticket.created_at }}</td>
+                    <td class="desktop-table">{{ ticket.updated_at }}</td>
+                    <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="table-scroll">
+            <h2>Resolved Tickets</h2>
+            <table class="project-tickets-table">
+                <tr>
+                    <th>Title</th>
+                    <th class="desktop-table">Ticket ID</th>
+                    <th class="desktop-table">Priority</th>
+                    <th>Project</th>
+                    <th>Assigned To</th>
+                    <th class="desktop-table">Created On</th>
+                    <th class="desktop-table">Updated On</th>
+                    <th>Action</th>
+                </tr>
+                {% for ticket in tickets %}
+                {% if ticket.status == 4 and ticket.user.id == request.session.user_id %}
+                <tr id="ticketID{{ ticket.id }}">
+                    <td>{{ ticket.title }}</td>
+                    <td class="desktop-table">{{ ticket.id }}</td>
+                    <td class="desktop-table"><span class="dot" id="{{ ticket.get_priority_display }}"></span>{{ ticket.get_priority_display }}</td>
+                    <td>{{ ticket.project.title }}</td>
+                    {% if ticket.status == 1 %}
+                    <td>Unassigned</td>
+                    {% else %}
+                    <td>{{ ticket.user.first_name }} {{ ticket.user.last_name }}</td>
+                    {% endif %}
+                    <td class="desktop-table">{{ ticket.created_at }}</td>
+                    <td class="desktop-table">{{ ticket.updated_at }}</td>
+                    <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
         </div>
     </div>
 </body>

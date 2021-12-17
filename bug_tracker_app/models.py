@@ -21,18 +21,22 @@ class UserManager(models.Manager):
         return errors
     
     def login_validator(self, postData):
-        user = User.objects.filter(email = postData['email'])
-        errors = {}
-        if user:
-            logged_user = user[0]
-            if bcrypt.checkpw(postData['password'].encode(), logged_user.password.encode()):
+        try:
+            user = User.objects.filter(email = postData['email'])
+            errors = {}
+            if user:
+                logged_user = user[0]
+                if bcrypt.checkpw(postData['password'].encode(), logged_user.password.encode()):
+                    return errors
+                else:
+                    errors['passwordUserMatch'] = "Incorrect email and password combination"
                 return errors
             else:
-                errors['passwordUserMatch'] = "Incorrect email and password combination"
+                errors['userNotFound'] = "No user associated with this email address"    
             return errors
-        else:
-            errors['userNotFound'] = "No user associated with this email address"
-        return errors
+        except:
+            error['nouser'] = "no user"
+            return errors
 
 class User(models.Model):
     USER_ROLE_CHOICES = (

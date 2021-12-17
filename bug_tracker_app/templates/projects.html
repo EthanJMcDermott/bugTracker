@@ -6,16 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
-    <title>Document</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
+    <title>Document</title>
 </head>
 <body>
-    
+    <script>
+        $(document).ready(function(){
+            $("#mobile-nav-btn").click(function() {
+                $("#mobile-nav").toggle();
+            })
+        })
+    </script>
     <div class="container">
     <div id=cover></div>
         <div class="header">
+            <a href="/">Home</a>
+            <a href="/projects">Projects</a>
+            <a href="/tickets">Tickets</a>
+            {% if request.session.role == 3 %}
+            <a href="/admin">Admin</a>
+            {% endif %}
+            <a href="/logout">Logout</a>
+            <button id="mobile-nav-btn">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+        <div id="mobile-nav">
             <a href="/">Home</a>
             <a href="/projects">Projects</a>
             <a href="/tickets">Tickets</a>

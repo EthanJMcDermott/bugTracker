@@ -11,37 +11,50 @@ from .decorators import *
 
 # Create your views here.
 def index(request):
-    today = datetime.date.today() 
-    week_day = datetime.date.today().strftime('%A')
-    month = datetime.datetime.today().month
-    month_list = []
-    month = 1
-    while len(month_list) < 3:
-        month_list.append(month)
-        month -= 1
-        if month < 1:
-            month = 12
-    this_user = User.objects.get(id=request.session['user_id'])
-    user_tickets = Ticket.objects.filter(user=this_user)
-    low_tickets = user_tickets.filter(priority = 1).count()
-    medium_tickets = user_tickets.filter(priority = 2).count()
-    high_tickets = user_tickets.filter(priority = 3).count()
-    projects = Project.objects.filter(users=this_user)
-    projects = Project.objects.annotate(num_tickets=Count('tickets', distinct=True)).filter(tickets__user=this_user)
-    tickets_by_project = Ticket.objects.order_by('title')
-    tickets_by_project = tickets_by_project.values('project__title').annotate(num_tickets=Count('id')).filter(user=this_user).order_by()
-    context = {
-        "today": today,
-        "weekday": week_day,
-        "tickets": Ticket.objects.filter(user=this_user),
-        "low": low_tickets,
-        "medium": medium_tickets,
-        "high": high_tickets,
-        "projects": projects,
-        "project_tickets": tickets_by_project,
-        "months": month_list
-    }
-    return render(request, 'index.html', context)
+    try:
+        request.session['user_id']
+        today = datetime.date.today() 
+        week_day = datetime.date.today().strftime('%A')
+        month = datetime.datetime.today().month
+        month_list = []
+        month = 1
+        while len(month_list) < 3:
+            month_list.append(month)
+            month -= 1
+            if month < 1:
+                month = 12
+        this_user = User.objects.get(id=request.session['user_id'])
+        user_tickets = Ticket.objects.filter(user=this_user)
+        low_tickets = user_tickets.filter(priority = 1).count()
+        medium_tickets = user_tickets.filter(priority = 2).count()
+        high_tickets = user_tickets.filter(priority = 3).count()
+        projects = Project.objects.filter(users=this_user)
+        projects = Project.objects.annotate(num_tickets=Count('tickets', distinct=True)).filter(tickets__user=this_user)
+        tickets_by_project = Ticket.objects.order_by('title')
+        tickets_by_project = tickets_by_project.values('project__title').annotate(num_tickets=Count('id')).filter(user=this_user).order_by()
+        total_tickets_open = Ticket.objects.filter(status__in=[1,2]).count()
+        total_tickets_closed = Ticket.objects.filter(status=4).count()
+        user_tickets_total = user_tickets.filter(status__in=[1,2]).count()
+        user_tickets_closed = user_tickets.filter(status=4).count()
+        context = {
+            "today": today,
+            "weekday": week_day,
+            "tickets": Ticket.objects.filter(user=this_user),
+            "low": low_tickets,
+            "medium": medium_tickets,
+            "high": high_tickets,
+            "projects": projects,
+            "project_tickets": tickets_by_project,
+            "months": month_list,
+            "total_tickets_open": total_tickets_open,
+            "total_tickets_closed": total_tickets_closed,
+            "user_tickets_total": user_tickets_total,
+            "user_tickets_closed": user_tickets_closed
+
+        }
+        return render(request, 'index.html', context)
+    except:
+        return redirect('/login')
 
 
 ### USER LOGIN AND REGISTRATION ###
@@ -250,6 +263,15 @@ def edit_user(request, userid):
         this_user.email = request.POST['email']
         this_user.save()
     return redirect('/')
+
+def admin_edit_user(request, userid):
+    if request.method == "POST":
+        this_user = User.objects.get(id=userid)
+        this_user.first_name = request.POST['first_name']
+        this_user.last_name = request.POST['last_name']
+        this_user.email = request.POST['email']
+        this_user.save()
+    return redirect('/admin')
 
 def logout(request):
     auth.logout(request)
