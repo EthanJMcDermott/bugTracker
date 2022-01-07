@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
-    </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
-    <title>Document</title>
-</head>
-<body>
+{% extends "base_layout.html" %}
+{% block content %}
     <script>
         $(document).ready(function(){
             $("#mobile-nav-btn").click(function() {
@@ -22,45 +8,28 @@
         })
     </script>
     <div class="container">
-        <div class="header">
-            <a href="/">Home</a>
-            <a href="/projects">Projects</a>
-            <a href="/tickets">Tickets</a>
-            {% if request.session.role == 3 %}
-            <a href="/admin">Admin</a>
-            {% endif %}
-            <a href="/logout">Logout</a>
-            <button id="mobile-nav-btn">
-                <i class="fas fa-bars fa-2x"></i>
-            </button>
-        </div>
-        <div id="mobile-nav">
-            <a href="/">Home</a>
-            <a href="/projects">Projects</a>
-            <a href="/tickets">Tickets</a>
-            {% if request.session.role == 3 %}
-            <a href="/admin">Admin</a>
-            {% endif %}
-            <a href="/logout">Logout</a>
-        </div>
-        <div class="sub-header">
+
+        {% include "header.html" %}
+
+        <div class="sub-header box-shadow">
             <h2>{{ ticket.title }}</h2>
+            <h2><a href="/projects/{{ ticket.project.id }}">View tickets from this project</a></h2>
         </div>
         <div class="tickets-comments">
-            <div class="individual-project box-shadow">
-                <h2>{{ ticket.title }}</h2>
-                <p>ID {{ ticket.id }}</p>
-                <p>Priority: {{ ticket.get_priority_display }}</p>
-                <p>{{ ticket.description }}</p>
-                <p>Assigned To: 
+            <div class="individual-ticket box-shadow">
+                <h2><span class="ticket-header">Title: </span>{{ ticket.title }}</h2>
+                <p><span class="ticket-header">ID: </span>{{ ticket.id }}</p>
+                <p><span class="ticket-header">Priority: </span>{{ ticket.get_priority_display }}</p>
+                <p><span class="ticket-header">Description: </span>{{ ticket.description }}</p>
+                <p><span class="ticket-header">Assigned To: </span>Assigned To: 
                     {% if ticket.user == None %}
                         Unassigned
                     {% else %}
                         {{ ticket.user.first_name }} {{ ticket.user.last_name }}
                     {% endif %}
                 </p>
-                <p>Created at: {{ ticket.created_at }}</p>
-                <p>Updated at: {{ ticket.updated_at }}</p>
+                <p><span class="ticket-header">Created At: </span> {{ ticket.created_at }}</p>
+                <p><span class="ticket-header">Updated At: </span> {{ ticket.updated_at }}</p>
                 {% if ticket.status == 2 %}
                 {% if request.session.user_id == ticket.user.id %}
                 <form action="/tickets/{{ ticket.id }}/submit" method="post">
@@ -90,27 +59,33 @@
                 </form>
                 {% endif %}
             </div>
-            <div class="comments">
-                <ul>
-                    {% for comment in comments %}
-                    <li></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="view-tickets-table">
-            <h2>I want to view...</h2>
-            <div>
-                {% if ticket.user != None %}
-                    <button class="ticket-button">Tickets Assigned to {{ ticket.user.first_name }} {{ ticket.user.last_name }}</button>
-                {% endif %}
-                <button class="ticket-button">Tickets This user has resolved</button>
-                <form action="/projects/{{ ticket.project.id }}">
-                    <button type="submit" class="ticket-button">All tickets from this project</button>
+            <div id="ticket-comments-container">
+                <div class="ticket-comments-display box-shadow">
+                    <ul>
+                        {% for comment in comments %}
+                        <li>
+                            <span class="comment-user">{{ comment.user.first_name }} {{ comment.user.last_name }}</span> <span class="comment-{{ comment.user.get_user_role_display }}">({{ comment.user.get_user_role_display }})</span><br>
+                            <div class="comment-time-delete">
+                                <span class="comment-time">{{ comment.created_at }}</span>
+                                {% if comment.user.id == request.session.user_id or request.session.role in admin%}
+                                <form action="/tickets/comments/{{ comment.id }}/delete" method="post">
+                                    {% csrf_token %}
+                                    <!-- <button type="submit" class="delete-comment">Delete</button> -->
+                                    <button type="submit" id="deleteUser{{ user.id }}"class="delete-user"><i class="fas fa-times"></i></button>
+                                </form>
+                            {% endif %}
+                            </div>
+                            <span class="comment-text">{{ comment.comment }} </span>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <form action="/tickets/comments/add" method="post">
+                    {% csrf_token %}
+                    <textarea class="box-shadow" name="comment" cols="30" rows="10" placeholder="Type a message..."></textarea>
+                    <input type="hidden" name="ticket" value="{{ ticket.id }}">
+                    <button class="open-form" type="submit">Comment</button>
                 </form>
-               
             </div>
         </div>
     </div>    
-</body>
-</html>
+{% endblock %}

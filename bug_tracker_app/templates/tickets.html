@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <title>Document</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
-    </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
-    <title>Document</title>
-</head>
-<body>
+{% extends "base_layout.html" %}
+{% block content %}
     <script>
         $(document).ready(function(){
             $("#mobile-nav-btn").click(function() {
@@ -23,28 +8,10 @@
         })
     </script>
     <div class="container">
-        <div class="header">
-            <a href="/">Home</a>
-            <a href="/projects">Projects</a>
-            <a href="/tickets">Tickets</a>
-            {% if request.session.role == 3 %}
-            <a href="/admin">Admin</a>
-            {% endif %}
-            <a href="/logout">Logout</a>
-            <button id="mobile-nav-btn">
-                <i class="fas fa-bars fa-2x"></i>
-            </button>
-        </div>
-        <div id="mobile-nav">
-            <a href="/">Home</a>
-            <a href="/projects">Projects</a>
-            <a href="/tickets">Tickets</a>
-            {% if request.session.role == 3 %}
-            <a href="/admin">Admin</a>
-            {% endif %}
-            <a href="/logout">Logout</a>
-        </div>
-        <div class="sub-header">
+
+        {% include "header.html" %}
+
+        <div class="sub-header box-shadow">
             <h2>My Tickets</h2>
         </div>
         <div class="table-scroll">
@@ -74,7 +41,15 @@
                     {% endif %}
                     <td class="desktop-table">{{ ticket.created_at }}</td>
                     <td class="desktop-table">{{ ticket.updated_at }}</td>
-                    <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                    <td>
+                        <form action="/tickets/{{ ticket.id }}">
+                            <button class="ticket-view" id="view-ticket" type="submit">View</button>
+                        </form>
+                        <form action="/tickets/{{ ticket.id }}/edit">
+                            <button class="ticket-view" id="edit-ticket" type="submit">Edit</button></td>
+                        </form>
+                        <!-- <button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button> -->
+                    </td>
                 </tr>
                 {% endif %}
                 {% endfor %}
@@ -107,12 +82,19 @@
                     {% endif %}
                     <td class="desktop-table">{{ ticket.created_at }}</td>
                     <td class="desktop-table">{{ ticket.updated_at }}</td>
-                    <td><button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button></td>
+                    <td>
+                        <!-- <button class="ticket-view" id="view-ticket"><a href="/tickets/{{ ticket.id }}">View</a></button> <button class="ticket-view" id="edit-ticket"><a href="/tickets/{{ ticket.id }}/edit">Edit</a></button> -->
+                        <form action="/tickets/{{ ticket.id }}">
+                            <button class="ticket-view" id="view-ticket" type="submit">View</button>
+                        </form>
+                        <form action="/tickets/{{ ticket.id }}/edit">
+                            <button class="ticket-view" id="edit-ticket" type="submit">Edit</button></td>
+                        </form>
+                    </td>
                 </tr>
                 {% endif %}
                 {% endfor %}
             </table>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

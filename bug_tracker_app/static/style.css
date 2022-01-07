@@ -4,7 +4,10 @@
     padding: 0;
     border: none;
     font-family: 'Roboto', sans-serif;
+    font-weight: 300;
 }
+
+html { scroll-behavior: smooth;}
 
 .box-shadow {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
@@ -170,8 +173,8 @@ i {
     color: #0497aa;
     background-color: rgb(255, 255, 255);
     padding: 1rem;
-    border-radius: 8px;
-    border:1.5px solid #0497aa;
+    /* border-radius: 8px;
+    border:1.5px solid #0497aa; */
 }
 .sub-header a {
     vertical-align: bottom;
@@ -211,7 +214,7 @@ input, textarea {
     padding: 2.5rem;
     border:1px solid #0497aa;
     border-radius: 6px;
-    background-color: rgb(255, 255, 255); 
+    background-color: rgb(255, 255, 255);
 }
 
 .login-header {
@@ -237,7 +240,6 @@ input, textarea {
     border: 1px solid rgb(206, 206, 206);
     border-radius: 20px;
     padding: 1rem;
-    
 }
 
 .login button {
@@ -248,8 +250,65 @@ input, textarea {
     background-color: rgb(41, 98, 255);
 }
 
+#user-reg-inputs {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#user-info, #company-info {
+    padding: 1rem;
+}
+
+#company-info p {
+    margin-top: 2rem;
+}
+
+#company-info label, #company-info input {
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+#company-info h2 {display: inline-block;}
+
+#company-or {
+    text-align: center;
+    text-decoration: underline;
+    font-size: .8rem;
+}
+
+#about-link {
+    text-decoration: underline;
+    display: inline-block;
+    font-size: .8rem;
+}
+
+#user-info { border-right: 1px solid black;}
+
+.username-password {
+    display: inline-block;
+    vertical-align: top;
+}
+
 #register {
     margin-top: 0;
+}
+
+#company-info h2 {vertical-align: top;}
+
+#company-optional {
+    font-size: .8rem;
+}
+
+#company-info h2 a {font-size: 1rem; display: block; width: fit-content;}
+
+#about {
+    margin: auto;
+    width: 80%;
+    margin-top: 10rem;
+}
+
+.about-section {
+    margin-bottom: 3rem;
 }
 
 /** For mobile devices **/
@@ -266,6 +325,16 @@ input, textarea {
     #register {
         margin-top: 5rem;
     }
+
+    #user-reg-inputs {
+        display: block;
+    }
+
+    #user-info {border: none;}
+
+    #company-info {
+        margin-top: 5rem;
+        border-top: .5px solid gray}
 }
 
 #logo-title {
@@ -296,6 +365,15 @@ input, textarea {
 
 .main.dash {
     display: block;
+    max-width: 1475px;
+    margin: auto;
+}
+
+#dash-header {
+    padding: 1rem;
+    background-color: white;
+    width: 90%;
+    margin: auto;
 }
 
 .dashboard {
@@ -321,6 +399,18 @@ input, textarea {
     margin-top: 1rem;
     padding: 2rem;
     display: inline-block;
+}
+
+#tickets-totals h2 {
+    margin-bottom: 1.5rem;
+    border-bottom: .5px solid gray;
+}
+
+#tickets-user { margin-top: 166px;}
+
+#tickets-user h2 {
+    margin-bottom: 1.5rem;
+    border-bottom: .5px solid gray;
 }
 
 .dashboard-continued {
@@ -388,6 +478,7 @@ button {
     background-color: white;
     border:1px solid #0497aa;
     border-radius: 3px;
+    z-index: 2;
 }
 
 .add-project input, .add-project textarea, .add-project select {
@@ -428,6 +519,7 @@ button {
     height: 300px;
     width: 20rem;
     margin: 3rem;
+    margin-right: 0;
     padding: 2rem;
     background-color: white;
     border-radius: 3px;
@@ -474,6 +566,11 @@ button {
 .comments form {
     display: inline-block;
     vertical-align: top;
+}
+
+.comment-time-delete {
+    display: flex;
+    justify-content: space-between;
 }
 
 #resolved-table {
@@ -630,6 +727,7 @@ li i {
     position:fixed;
     top:0;
     left:0;
+    z-index: 2;
     opacity: .5;
 }
 
@@ -649,6 +747,68 @@ li i {
     padding: 0;
     background-color: lightblue;
 }
+
+.ticket-comments-display {
+    padding: 2rem;
+    width: 25rem;
+    height: 15rem;
+    display: inline-block;
+    background-color: white;
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.tickets-comments {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.ticket-comments-display li {
+    border-bottom: .5px solid gray;
+    padding: 1rem;
+}
+
+#ticket-comments-container form textarea{
+    border-radius: 10px;
+    width: 25rem;
+    padding: 2rem;
+    height: 3rem;
+}
+
+#ticket-comment-box {
+    margin: 0;
+}
+
+.ticket-header {
+    font-weight:500;
+}
+
+#edit-user-profile {
+    width: 12rem;
+    margin-left: 2rem;
+}
+
+.individual-ticket {
+    background-color: white;
+    width: 25rem;
+    padding: 2rem;
+}
+
+.individual-ticket form input{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 1rem;
+    width: fit-content;
+}
+
+.individual-ticket h2 { 
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: .5px solid black;
+}
+
+.individual-ticket p { margin-bottom: 1rem;}
 
 #ticket-submit {
     background-color: orange;
@@ -676,24 +836,24 @@ li i {
     display: inline-block;
 }
 
+
 .ticket-button {
     background-color: #0497aa;
 }
 
 .edit-ticket {
     width: fit-content;
-    margin-top: 50px;
+    margin: auto;
     padding: 2rem;
-    background-color: orange;
-    /* border:1px solid #0497aa; */
-    border-radius: 3px;
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
 .edit-ticket input, .edit-ticket textarea, .edit-ticket select {
     width: 94%;
     background: white;
-    border-radius: 3px;
+    border: 1px solid black;
+    border-radius: 10px;
     padding: .5rem;
 }
 
@@ -748,6 +908,21 @@ li i {
     padding: .5rem;
 }
 
+.deleteUsers { display: none;}
+
+#delete-warning {
+    font-weight: bold;
+    color: red;
+}
+
+#delete-user-btn {
+    background-color: red;
+}
+
+#admin-project-users p {
+    max-width: 13rem;
+}
+
 /* MY TICKETS */
 .table-scroll {
     vertical-align: top;
@@ -760,14 +935,16 @@ li i {
         display: none;
     }
 
-    .header {
-        margin-bottom: 0;
-    }
+    .header {margin-bottom: 0;}
 
     .header button {
         display: block;
         background-color: white;
     }
+
+    .sub-header {width: 100%; padding-left: 0; padding-right: 0; margin-left: 0;}
+
+    .sub-header h2 {margin-left: 2rem;}
 
     #mobile-nav {
         display: none;
@@ -780,10 +957,6 @@ li i {
         text-align: center;
         font-size: x-large;
         padding: 3rem;
-    }
-
-    #dash-header {
-        padding: 2rem;
     }
 
     .dash-tickets {
@@ -838,13 +1011,37 @@ li i {
 
 }
 
+@media (max-width: 800px){
+    
+}
 
-@media (max-width: 1200px) {
-    .dashboard {
-        display: inline-block;
-        width: 100%;
+@media (max-width: 1000px) {
+    .tickets-comments {
+        display: block;
+    }
+    .tickets-comments > * {
+        margin: auto;
+        margin-bottom: 1rem;
     }
 
+    #ticket-comments-container {
+        width: fit-content;
+    }
+
+    .dashboard {display: block;}
+    .dash-tickets {display: block;}
+}
+
+@media (max-width: 1200px) and (min-width: 800px) {
+    .dashboard {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 1200px) {
     .project-tickets {
         width: 100%;
     }
@@ -853,6 +1050,10 @@ li i {
         margin: auto;
         margin-top: 1rem;
     }
+
+    #dash-ticket-totals {
+        display: none;
+    }
     
     .comments {
         margin: auto;
@@ -860,12 +1061,16 @@ li i {
     }
 
     .comments form {
-        width: fit-content;
+        width: 100%;
     }
 
     .comments form textarea {
         height: fit-content;
+        width: 100%;
+        padding: 0;
     }
+
+
 
     .project-comments {
         width: 100%;
@@ -873,6 +1078,7 @@ li i {
     
     .main.login-reg {
         display: block;
+        margin-top: 0;
     }
 
     #logo-title {
@@ -890,12 +1096,17 @@ li i {
         display: none;
     }
 
+    .custom-shape-divider-bottom-1637208676 { display: none;}
+
+    .footer i {color: black;}
+
 }
 
 @media (max-width: 1415px) {
     .project-users {
         display: none;
-        width: 10rem;
+        position: absolute;
+        z-index: 1;
     }
 
     .project-tickets {

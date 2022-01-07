@@ -1,27 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <title>Bug Tracker</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-    </style>
-    <script src="https://kit.fontawesome.com/f6fbc72d0a.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    
+{% extends "base_layout.html" %}
+{% block content %}
     <div class="container-login">
-        <div class="custom-shape-divider-bottom-1637208676">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-            </svg>
-            
-        </div>
-        
         <div class="header">
             <h2>Welcome To Bug Tracker</h2>
         </div>
@@ -33,11 +12,31 @@
                 </div>
                 <form action="/login/register" method="post">
                     {% csrf_token %}
-                    <input type="text" name="first_name" placeholder="first name">
-                    <input type="text" name="last_name" placeholder="last name">
-                    <input type="email" name="email" placeholder="user@email.com">
-                    <input type="password" name="password" placeholder="password">
-                    <input type="password" name="password_confirm" placeholder="confirm password">
+                    <div id="user-reg-inputs">
+                        <div id="user-info">
+                            <h2>User Information</h2>
+                            <div class="username-password">
+                                <input type="text" name="first_name" placeholder="first name">
+                                <input type="text" name="last_name" placeholder="last name">
+                                <input type="email" name="email" placeholder="user@email.com">
+                            </div>
+                            <div class="username-password">
+                                <input type="password" name="password" placeholder="password">
+                                <input type="password" name="password_confirm" placeholder="confirm password">
+                            </div>
+                        </div>
+                        <div id="company-info">
+                            <div>
+                                <h2>Company<a id="company-about-link" href="#about">What is this?</a></h2>
+                            </div>
+                            <input type="text" name="old_company_name" placeholder="company name">
+                            <input type="text" name="company_code" placeholder="company code">
+                            <p id="company-or">OR</p>
+                            <p>Create New Company?</p>
+                            <input type="text" name="company_name" placeholder="company name">
+                            <input type="text" name="new_company_code" placeholder="company code">
+                        </div>
+                    </div>
                     <button type="submit">Register</button>
                 </form>
             </div>
@@ -51,12 +50,29 @@
             </ul>
         </div>
         {% endif %}
-        <div class="footer">
-            <i class="fab fa-linkedin fa-2x"></i>
-            <i class="fab fa-github-square fa-2x"></i>
-            <i class="fas fa-laptop-code fa-2x"></i>
+        <div id="about">
+            <div id="company-code" class="about-section">
+                <h1>Company Code</h1>
+                <p>
+                    The company code is a 6 digit code generated when a new company is registered on Bug Tracker. Simply input this code
+                    when registering your account to get started with your company.
+                    <br>
+                    To find the company code go to your user profile where you can also change company codes.
+                </p>
+            </div>
+            <div id="register-new-company" class="about-section">
+                <h1>Register a New Company</h1>
+                <p>
+                    Register a new company to create a blank canvas for your all of your bug tracking needs. The user registering the
+                    company will be assigned the role of admin.
+                </p>
+            </div>
+            <div id="demo-project" class="about-section">
+                <h1>Demo Project</h1>
+                <p>By default, all accounts are registered to the demo company. If no company code is given and a new company is not
+                    registered, the demo company page will be loaded upon login. Change to or from the demo page in the user profile page.
+                </p>
+            </div>
         </div>
     </div>
-    
-</body>
-</html> 
+{% endblock %}

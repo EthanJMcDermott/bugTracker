@@ -16,6 +16,8 @@ urlpatterns = [
     path('comments/add', views.comment),
     path('comments/<int:commentid>/delete', views.delete_comment),
     path('tickets/<int:ticketid>', views.ticket_view),
+    path('tickets/comments/add', views.add_ticket_comment),
+    path('tickets/comments/<int:commentid>/delete', views.delete_ticket_comment),
     path('tickets/<int:ticketid>/delete', views.delete_ticket),
     path('tickets/<int:ticketid>/submit', views.submit_ticket),
     path('tickets/<int:ticketid>/resolve', views.resolve_ticket),
@@ -25,5 +27,6 @@ urlpatterns = [
     path('user/<int:userid>/edit', views.edit_user),
     path('admin', views.admin),
     path('admin/<int:userid>/edit', views.admin_edit_user),
+    path('admin/users/<int:userid>/delete', views.admin_delete_user),
     path('logout', views.logout)
 ]
