@@ -63,7 +63,7 @@
                 <form action="/projects/{{ project.id }}/add_user" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="project" value="{{ project.id }}">
-                    <label for="add-project-user">Add a User to {{ project.title }}</label>
+                    <label for="add-project-user">Add a User</label>
                     <select name="add-project-user" id="add-project-user" required>
                         <option value=""></option>
                         {% for user in all_users %}

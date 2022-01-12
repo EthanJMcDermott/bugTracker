@@ -9,8 +9,9 @@
     </script>
    {% include "header.html" %}
 
-    <div class="sub-header box-shadow">
+    <div class="sub-header box-shadow" id="edit-user-sub-header">
         <h2>Edit User Profile</h2>
+        <h2>Company: {{ this_company.company_name }}</h2>
     </div>  
     <div id="edit-user-profile" class="individual-ticket box-shadow">
         <form action="/user/{{ request.session.user_id }}/edit" method="post">

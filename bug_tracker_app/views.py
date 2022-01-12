@@ -6,7 +6,8 @@ from .decorators import unauthenticated_user
 from django.db.models import Count, Q
 import datetime
 from django.contrib.auth.decorators import login_required
-from .decorators import *
+from .decorators import unauthenticated_user
+import functools
 
 # Create your views here.
 def index(request):
@@ -123,20 +124,24 @@ def logout(request):
 
 ##########################################
 
-### PROJECTS PAGE RENDER AND FUNCTIONS ###d 2`1
+### PROJECTS PAGE RENDER AND FUNCTIONS ###
 
 ##########################################
 def projects(request):
-    this_user = User.objects.get(id=request.session['user_id'])
-    this_company = this_user.company
-    admin = [2,3]
-    context = {
-        "this_user": this_user,
-        "users": User.objects.filter(company=this_company),
-        "projects": Project.objects.filter(company=this_company),
-        "admin": admin
-    }
-    return render(request, 'projects.html', context)
+    try:
+        request.session['user_id']
+        this_user = User.objects.get(id=request.session['user_id'])
+        this_company = this_user.company
+        admin = [2,3]
+        context = {
+            "this_user": this_user,
+            "users": User.objects.filter(company=this_company),
+            "projects": Project.objects.filter(company=this_company),
+            "admin": admin
+        }
+        return render(request, 'projects.html', context)
+    except:
+        return redirect('/login')
 
 def add_project(request):
     if request.method == "POST":
@@ -154,17 +159,22 @@ def add_project(request):
 
 ###############################################
 def view_project(request, projectid):
-    project = Project.objects.get(id=projectid)
-    admin = [2,3]
-    context = {
-        "project": project,
-        "users": project.users.all(),
-        "tickets": project.tickets.all(),
-        "comments": project.comments.all().reverse(),
-        "all_users": User.objects.all(),
-        "admin": admin
-    }
-    return render(request, 'project_view.html', context)
+    try:
+        request.session['user_id']
+        project = Project.objects.get(id=projectid)
+        this_company = project.company
+        admin = [2,3]
+        context = {
+            "project": project,
+            "users": project.users.all(),
+            "tickets": project.tickets.all(),
+            "comments": project.comments.all().reverse(),
+            "all_users": User.objects.filter(company=this_company),
+            "admin": admin
+        }
+        return render(request, 'project_view.html', context)
+    except:
+        return redirect('/login')
 
 def add_project_user(request, projectid):
     if request.method == "POST":
@@ -211,18 +221,26 @@ def add_ticket(request):
 
 ###############################################
 def tickets(request):
-    context = {
-        "tickets": Ticket.objects.all()
-    }
-    return render(request, 'tickets.html', context)
+    try:
+        request.session['user_id']
+        context = {
+            "tickets": Ticket.objects.all()
+        }
+        return render(request, 'tickets.html', context)
+    except:
+        return redirect('/login')
 
 def ticket_view(request, ticketid):
-    ticket = Ticket.objects.get(id=ticketid)
-    context = {
-        "ticket": ticket,
-        "comments": ticket.comments.all().reverse(),
-    }
-    return render(request, 'ticket_view.html', context)
+    try:
+        request.session['user_id']
+        ticket = Ticket.objects.get(id=ticketid)
+        context = {
+            "ticket": ticket,
+            "comments": ticket.comments.all().reverse(),
+        }
+        return render(request, 'ticket_view.html', context)
+    except:
+        return redirect('/login')
 
 def add_ticket_comment(request):
     if request.method == "POST":
@@ -254,16 +272,21 @@ def resolve_ticket(request, ticketid):
     return redirect(f'/tickets/{ticketid}')
 
 def delete_ticket(request, ticketid):
-    this_ticket = Ticket.objects.get(id=ticketid)
-    this_ticket.delete()
+    if request.method == "POST":
+        this_ticket = Ticket.objects.get(id=ticketid)
+        this_ticket.delete()
     return redirect('/projects')
 
 def edit_ticket(request, ticketid):
-    context = {
-        "ticket": Ticket.objects.get(id=ticketid),
-        "users": User.objects.all()
-    }
-    return render(request, 'edit_ticket.html', context)
+    try:
+        request.session['user_id']
+        context = {
+            "ticket": Ticket.objects.get(id=ticketid),
+            "users": User.objects.all()
+        }
+        return render(request, 'edit_ticket.html', context)
+    except:
+        return redirect('/login')
 
 def edit_ticket_submit(request, ticketid):
     if request.method == "POST":
@@ -276,17 +299,32 @@ def edit_ticket_submit(request, ticketid):
     return redirect(f'/tickets/{ticketid}')
 
 def admin(request):
-    if request.session['role'] not in [2,3]:
-        return redirect('/')
-    else:
-        context = {
-            "tickets": Ticket.objects.all(),
-            "users": User.objects.all()
-        }
-        return render(request, 'admin.html', context)
+    try:
+        request.session['user_id']
+        if request.session['role'] not in [2,3]:
+            return redirect('/')
+        else:
+            this_user = User.objects.get(id=request.session['user_id'])
+            this_company = this_user.company
+            context = {
+                "tickets": Ticket.objects.filter(company=this_company),
+                "users": User.objects.filter(company=this_company)
+            }
+            return render(request, 'admin.html', context)
+    except:
+        return redirect('/login')
 
 def user(request, userid):
-    return render(request, 'user.html')
+    try:
+        request.session['user_id']
+        this_user = User.objects.get(id=request.session['user_id'])
+        this_company = this_user.company
+        context = {
+            "this_company": this_company
+        }
+        return render(request, 'user.html', context)
+    except:
+        return redirect('/login')
 
 def edit_user(request, userid):
     if request.method == "POST":
@@ -315,3 +353,6 @@ def admin_delete_user(request, userid):
 def logout(request):
     auth.logout(request)
     return redirect('/login')
+
+def about(request):
+    return render(request, 'about.html')

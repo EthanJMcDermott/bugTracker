@@ -311,6 +311,11 @@ input, textarea {
     margin-bottom: 3rem;
 }
 
+.about-page-content {
+    width: 90%;
+    margin: auto;
+}
+
 /** For mobile devices **/
 @media (max-width: 767px) {
     .login {
@@ -634,7 +639,6 @@ li i {
     background-color: white;
 }
 
-
 .project-users form {
     margin-top: 1rem;
 }
@@ -789,10 +793,16 @@ li i {
     margin-left: 2rem;
 }
 
+#edit-user-sub-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .individual-ticket {
     background-color: white;
     width: 25rem;
     padding: 2rem;
+    height: fit-content;
 }
 
 .individual-ticket form input{
