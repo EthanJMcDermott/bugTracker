@@ -21,7 +21,7 @@
                 <p><span class="ticket-header">ID: </span>{{ ticket.id }}</p>
                 <p><span class="ticket-header">Priority: </span>{{ ticket.get_priority_display }}</p>
                 <p><span class="ticket-header">Description: </span>{{ ticket.description }}</p>
-                <p><span class="ticket-header">Assigned To: </span>Assigned To: 
+                <p><span class="ticket-header">Assigned To: </span>
                     {% if ticket.user == None %}
                         Unassigned
                     {% else %}
@@ -32,11 +32,16 @@
                 <p><span class="ticket-header">Updated At: </span> {{ ticket.updated_at }}</p>
                 {% if ticket.status == 2 %}
                 {% if request.session.user_id == ticket.user.id %}
-                <form action="/tickets/{{ ticket.id }}/submit" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="ticket-status" value="3">
-                    <button id="ticket-submit" type="submit">Submit for Review</button>
-                </form>
+                <div id="ticket-submit-edit">
+                    <form action="/tickets/{{ ticket.id }}/submit" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket-status" value="3">
+                        <button id="ticket-submit" type="submit">Submit for Review</button>
+                    </form>
+                    <form action="/tickets/{{ ticket.id }}/edit">
+                        <button type="submit" id="ticket-edit">Edit</button>
+                    </form>
+                </div>
                 {% endif %}
                 {% endif %}
                 {% if ticket.status == 3 %}

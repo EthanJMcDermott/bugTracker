@@ -1,23 +1,59 @@
 {% extends "base_layout.html" %}
 {% block content %}
 
+
 <div class="container-login">
-    <div class="header">
+    <div class="header" id="header-about">
         <h2>Welcome To Bug Tracker</h2>
+        <h2><a href="/login">Login</a></h2>
     </div>
     <div class="about-page-content">
-        <h1>&lt Bug Tracker &gt</h1>
+        <h1 id="title">&lt Bug Tracker &gt</h1>
         <h2>A ticketing system built for software development</h2>
 
         <div class="about-page-feature">
-            <h2>Clean and Simply User Dashboard</h2>
-            image
+            <h2>Clean and Simple User Dashboard</h2>
+            {% load static %}
+            <img class="about-images" src="{% static 'images/dashboard-ss.png' %}" alt="website dashboard image">
         </div>
         <div class="about-page-feature">
             <h2>Create Projects</h2>
-            image
+            <video autoplay controls playsinline loop muted class="about-images">
+                <source src="{% static 'images/create-project.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        <div class="about-page-feature">
+            <h2>Add users, create tickets, and get to work!</h2>
+            <video autoplay controls playsinline loop muted class="about-images">
+                <source src="{% static 'images/create-tickets.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        <div class="about-page-feature">
+            <h2>Tickets</h2>
+            <img class="about-images" src="{% static 'images/ticket-ss.png' %}" alt="ticket image">
+        </div>
+        <div class="about-page-feature">
+            <h2>Admin role to manage users and tickets</h2>
+            <video autoplay controls playsinline loop muted class="about-images">
+                <source src="{% static 'images/admin-use.mp4' %}" type="video/mp4">
+            </video>
         </div>
     </div>
 </div>
+<script>
+    window.onscroll = function() {headerSticky()}
+    var header = document.getElementById("header-about")
+    var title = document.getElementById("title")
+    var sticky = header.offsetTop
 
+    function headerSticky() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+            title.classList.add("title-sticky")
+        } else {
+            header.classList.remove("sticky");
+            title.classList.remove("title-sticky")
+        }
+    }
+</script>
 {% endblock %}

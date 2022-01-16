@@ -301,6 +301,22 @@ input, textarea {
 
 #company-info h2 a {font-size: 1rem; display: block; width: fit-content;}
 
+#login-learn-more {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bolder;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%
+}
+
+.title-sticky {
+    margin-top: 7rem;
+}
+
 #about {
     margin: auto;
     width: 80%;
@@ -311,9 +327,17 @@ input, textarea {
     margin-bottom: 3rem;
 }
 
+.about-page-feature {
+    margin-top: 5rem;
+}
+
 .about-page-content {
     width: 90%;
     margin: auto;
+}
+
+.about-images {
+    width: 75%;
 }
 
 /** For mobile devices **/
@@ -820,12 +844,23 @@ li i {
 
 .individual-ticket p { margin-bottom: 1rem;}
 
-#ticket-submit {
+#ticket-submit-edit {
+    display: flex;
+    justify-content: space-between;
+}
+
+#ticket-edit {
     background-color: orange;
+    width: 9rem;
+}
+#ticket-submit {
+    background-color: rgb(0, 151, 0);
+    width: 9rem;
 }
 
 #ticket-delete {
     background-color: rgb(255, 75, 75);
+    width: 9rem;
 }
 
 #ticket-resolve {
@@ -1052,6 +1087,8 @@ li i {
 
 
 @media (max-width: 1200px) {
+    
+
     .project-tickets {
         width: 100%;
     }
@@ -1113,6 +1150,10 @@ li i {
 }
 
 @media (max-width: 1415px) {
+    .about-images {
+        width: 95%;
+    }
+
     .project-users {
         display: none;
         position: absolute;
