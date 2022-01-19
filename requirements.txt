@@ -4,6 +4,7 @@ certifi==2021.10.8
 cffi==1.14.6
 charset-normalizer==2.0.9
 Django==2.2
+gunicorn==20.1.0
 idna==3.3
 lxml==4.7.1
 pycparser==2.20
